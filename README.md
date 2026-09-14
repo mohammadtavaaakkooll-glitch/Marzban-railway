@@ -2,7 +2,7 @@
 
 <img src="https://github.com/Gozargah/Marzban-docs/raw/master/screenshots/logo-light.png" width="140" height="140" alt="Marzban Logo">
 
-# Marzban — Railway Edition
+# Marzban — Railway Edition By Genral DeepSeek And ParhamPm
 
 ### Unified GUI Censorship-Resistant Solution Powered by Xray
 
