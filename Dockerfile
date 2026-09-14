@@ -32,8 +32,7 @@ RUN ln -s /usr/local/bin/xray /usr/bin/xray && \
 COPY . /code
 
 RUN ln -s /code/marzban-cli.py /usr/bin/marzban-cli \
-    && chmod +x /usr/bin/marzban-cli \
-    && marzban-cli completion install --shell bash
+    && chmod +x /usr/bin/marzban-cli
 
 ENV UVICORN_HOST=0.0.0.0
 ENV UVICORN_PORT=8000
