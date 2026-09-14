@@ -26,6 +26,10 @@ COPY --from=build $PYTHON_LIB_PATH $PYTHON_LIB_PATH
 COPY --from=build /usr/local/bin /usr/local/bin
 COPY --from=build /usr/local/share/xray /usr/local/share/xray
 
+# Create symlinks for Xray so /usr/bin/xray works
+RUN ln -s /usr/local/bin/xray /usr/bin/xray && \
+    ln -s /usr/local/share/xray /usr/share/xray
+
 COPY . /code
 
 RUN ln -s /code/marzban-cli.py /usr/bin/marzban-cli \
@@ -37,4 +41,4 @@ ENV UVICORN_PORT=8000
 
 EXPOSE 8000
 
-CMD ["bash", "-c", "alembic upgrade head; uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["bash", "-c", "alembic upgrade head; uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
