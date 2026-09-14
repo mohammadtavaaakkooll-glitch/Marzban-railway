@@ -4,10 +4,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SQLALCHEMY_DATABASE_URL = config("SQLALCHEMY_DATABASE_URL", default="sqlite:///db.sqlite3")
+# ============================================================
+# DATABASE
+# ============================================================
+SQLALCHEMY_DATABASE_URL = config("SQLALCHEMY_DATABASE_URL", default="sqlite:////var/lib/marzban/db.sqlite3")
 SQLALCHEMY_POOL_SIZE = config("SQLALCHEMY_POOL_SIZE", cast=int, default=10)
 SQLIALCHEMY_MAX_OVERFLOW = config("SQLIALCHEMY_MAX_OVERFLOW", cast=int, default=30)
 
+# ============================================================
+# UVICORN
+# ============================================================
 UVICORN_HOST = config("UVICORN_HOST", default="0.0.0.0")
 UVICORN_PORT = config("UVICORN_PORT", cast=int, default=8000)
 UVICORN_UDS = config("UVICORN_UDS", default=None)
@@ -25,16 +31,22 @@ VITE_BASE_API = f"http://127.0.0.1:{UVICORN_PORT}/api/" \
     if DEBUG and config("VITE_BASE_API", default="/api/") == "/api/" \
     else config("VITE_BASE_API", default="/api/")
 
-XRAY_JSON = config("XRAY_JSON", default="./xray_config.json")
+# ============================================================
+# XRAY
+# ============================================================
+XRAY_JSON = config("XRAY_JSON", default="/var/lib/marzban/xray_config.json")
 XRAY_FALLBACKS_INBOUND_TAG = config("XRAY_FALLBACKS_INBOUND_TAG", cast=str, default="") or config(
     "XRAY_FALLBACK_INBOUND_TAG", cast=str, default=""
 )
 XRAY_EXECUTABLE_PATH = config("XRAY_EXECUTABLE_PATH", default="/usr/local/bin/xray")
 XRAY_ASSETS_PATH = config("XRAY_ASSETS_PATH", default="/usr/local/share/xray")
 XRAY_EXCLUDE_INBOUND_TAGS = config("XRAY_EXCLUDE_INBOUND_TAGS", default='').split()
-XRAY_SUBSCRIPTION_URL_PREFIX = config("XRAY_SUBSCRIPTION_URL_PREFIX", default="").strip("/")
+XRAY_SUBSCRIPTION_URL_PREFIX = config("XRAY_SUBSCRIPTION_URL_PREFIX", default="https://your-app.up.railway.app").strip("/")
 XRAY_SUBSCRIPTION_PATH = config("XRAY_SUBSCRIPTION_PATH", default="sub").strip("/")
 
+# ============================================================
+# TELEGRAM
+# ============================================================
 TELEGRAM_API_TOKEN = config("TELEGRAM_API_TOKEN", default="")
 TELEGRAM_ADMIN_ID = config(
     'TELEGRAM_ADMIN_ID',
@@ -101,6 +113,9 @@ USER_AUTODELETE_INCLUDE_LIMITED_ACCOUNTS = config("USER_AUTODELETE_INCLUDE_LIMIT
 SUDOERS = {"admin": "admin"}
 
 
+# ============================================================
+# WEBHOOK
+# ============================================================
 WEBHOOK_ADDRESS = config(
     'WEBHOOK_ADDRESS',
     default="",
@@ -109,20 +124,15 @@ WEBHOOK_ADDRESS = config(
 WEBHOOK_SECRET = config("WEBHOOK_SECRET", default=None)
 
 # recurrent notifications
-
-# timeout between each retry of sending a notification in seconds
 RECURRENT_NOTIFICATIONS_TIMEOUT = config("RECURRENT_NOTIFICATIONS_TIMEOUT", default=180, cast=int)
-# how many times to try after ok response not recevied after sending a notifications
 NUMBER_OF_RECURRENT_NOTIFICATIONS = config("NUMBER_OF_RECURRENT_NOTIFICATIONS", default=3, cast=int)
 
-# sends a notification when the user uses this much of thier data
 NOTIFY_REACHED_USAGE_PERCENT = config(
     "NOTIFY_REACHED_USAGE_PERCENT",
     default="80",
     cast=lambda v: [int(p.strip()) for p in v.split(',')] if v else []
 )
 
-# sends a notification when there is n days left of their service
 NOTIFY_DAYS_LEFT = config(
     "NOTIFY_DAYS_LEFT",
     default="3",
@@ -131,16 +141,16 @@ NOTIFY_DAYS_LEFT = config(
 
 DISABLE_RECORDING_NODE_USAGE = config("DISABLE_RECORDING_NODE_USAGE", cast=bool, default=False)
 
-# headers: profile-update-interval, support-url, profile-title
 SUB_UPDATE_INTERVAL = config("SUB_UPDATE_INTERVAL", default="12")
 SUB_SUPPORT_URL = config("SUB_SUPPORT_URL", default="https://t.me/")
 SUB_PROFILE_TITLE = config("SUB_PROFILE_TITLE", default="Subscription")
 
-# discord webhook log
 DISCORD_WEBHOOK_URL = config("DISCORD_WEBHOOK_URL", default="")
 
 
-# Interval jobs, all values are in seconds
+# ============================================================
+# JOB INTERVALS (seconds)
+# ============================================================
 JOB_CORE_HEALTH_CHECK_INTERVAL = config("JOB_CORE_HEALTH_CHECK_INTERVAL", cast=int, default=10)
 JOB_RECORD_NODE_USAGES_INTERVAL = config("JOB_RECORD_NODE_USAGES_INTERVAL", cast=int, default=30)
 JOB_RECORD_USER_USAGES_INTERVAL = config("JOB_RECORD_USER_USAGES_INTERVAL", cast=int, default=10)
