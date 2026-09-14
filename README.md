@@ -1,4 +1,5 @@
-<p align="center">
+        <img src="https://img.shields.io/docker/pulls/gozargah/marzban?style=flat-square&logo=docker" />
+    <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Gozargah/Marzban-docs/raw/master/screenshots/logo-dark.png">
@@ -7,10 +8,12 @@
   </a>
 </p>
 
-<h1 align="center"/>Marzban</h1>
+<h1 align="center"/>ApexVPN Panel</h1>
 
 <p align="center">
     Unified GUI Censorship Resistant Solution Powered by <a href="https://github.com/XTLS/Xray-core">Xray</a>
+    <br/>
+    <b>Railway-Ready Fork</b> — Modified and pre-configured for one-click deployment on Railway
 </p>
 
 <br/>
@@ -19,8 +22,72 @@
         <img src="https://img.shields.io/github/actions/workflow/status/gozargah/marzban/build.yml?style=flat-square" />
     </a>
     <a href="https://hub.docker.com/r/gozargah/marzban" target="_blank">
-        <img src="https://img.shields.io/docker/pulls/gozargah/marzban?style=flat-square&logo=docker" />
+        <img src="https://img.shields.io/docker/pulls/gozargah/marzban?style=flat-square" />
     </a>
+</p>
+
+# Overview
+
+This project is a **modified fork of Marzban**, pre-configured to run smoothly on **Railway** with minimal setup. The original Marzban is a proxy management tool built with Python and React that provides a simple and easy-to-use user interface for managing hundreds of proxy accounts powered by Xray-core.
+
+## What's Different in This Fork?
+
+- **Railway-Optimized Dockerfile** — Port is dynamically read from `$PORT` environment variable
+- **PostgreSQL Ready** — Works out of the box with Railway's PostgreSQL plugin
+- **Volume Support** — Data persists across redeploys when a Railway Volume is attached
+- **One-Click Deploy** — No manual server setup required
+- **All features of the original Marzban** — VLESS, VMess, Trojan, Shadowsocks, Telegram Bot, REST API, Multi-node support
+
+## Deploy on Railway
+
+1. Fork this repository
+2. Go to [railway.app](https://railway.app) and create a new project
+3. Choose **Deploy from GitHub repo** and select your fork
+4. Add a **PostgreSQL** database plugin
+5. Add a **Volume** with mount path `/var/lib/marzban`
+6. Set the following environment variables:
+
+| Variable | Value |
+|---|---|
+| `SUDO_USERNAME` | `admin` |
+| `SUDO_PASSWORD` | your-secure-password |
+| `UVICORN_HOST` | `0.0.0.0` |
+| `UVICORN_PORT` | `$PORT` |
+| `SQLALCHEMY_DATABASE_URL` | `${{Postgres.DATABASE_URL}}` |
+| `XRAY_JSON` | `/var/lib/marzban/xray_config.json` |
+
+7. Generate a domain in **Settings → Networking**
+8. Set the **Target Port** to `8000`
+9. Access the dashboard at `https://your-app.up.railway.app/dashboard/`
+
+## Features
+
+- Built-in **Web UI**
+- Fully **REST API** backend
+- **Multiple Nodes** support (for infrastructure distribution & scalability)
+- Supports protocols **VMess**, **VLESS**, **Trojan** and **Shadowsocks**
+- **Multi-protocol** for a single user
+- **Multi-user** on a single inbound
+- **Multi-inbound** on a **single port** (fallbacks support)
+- **Traffic** and **expiry date** limitations
+- **Periodic** traffic limit (e.g., daily, weekly, etc.)
+- **Subscription link** compatible with **V2ray** (such as V2RayNG, SingBox, Nekoray, etc.), **Clash** and **ClashMeta**
+- Automated **Share link** and **QRcode** generator
+- System monitoring and **traffic statistics**
+- Customizable xray configuration
+- **TLS** and **REALITY** support
+- Integrated **Telegram Bot**
+- Integrated **Command Line Interface (CLI)**
+- **Multi-language**
+- **Multi-admin** support (WIP)
+
+## Local Installation with Docker
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
+docker build -t apexvpn-panel .
+docker run -d -p 8000:8000 -v /var/lib/marzban:/var/lib/marzban --name apexvpn apexvpn-panel/a>
     <a href="#">
         <img src="https://img.shields.io/github/license/gozargah/marzban?style=flat-square" />
     </a>
