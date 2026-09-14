@@ -32,4 +32,9 @@ RUN ln -s /code/marzban-cli.py /usr/bin/marzban-cli \
     && chmod +x /usr/bin/marzban-cli \
     && marzban-cli completion install --shell bash
 
-CMD ["bash", "-c", "alembic upgrade head; python main.py"]
+ENV UVICORN_HOST=0.0.0.0
+ENV UVICORN_PORT=8000
+
+EXPOSE 8000
+
+CMD ["bash", "-c", "alembic upgrade head; uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}"]
